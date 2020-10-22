@@ -1,5 +1,6 @@
 package com.capgemini.invoiceservice;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.Assert;
@@ -9,6 +10,13 @@ import junit.framework.Assert;
  *
  */
 public class InvoiceServiceTest {
+	InvoiceGenerator invoiceGenerator = null;
+
+	@Before
+	public void setUp() throws Exception {
+		invoiceGenerator = new InvoiceGenerator();
+	}
+
 	@Test
 	public void givenDistanceAndTimeShouldReturnTotalFare() {
 		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
@@ -30,8 +38,9 @@ public class InvoiceServiceTest {
 	@Test
 	public void givenMultipleRidesReturnTotalFare() {
 		InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
-		Ride[] rides = { new Ride(2.0, 5), new Ride(0.08, 1) };
-		double fare = invoiceGenerator.calculateFare(rides);
-		Assert.assertEquals(30, fare, 0.0);
+		Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+		InvoiceSummary summary = invoiceGenerator.calculateFare(rides);
+		InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0);
+		Assert.assertEquals(expectedSummary, summary);
 	}
 }
